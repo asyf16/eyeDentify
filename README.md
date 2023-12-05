@@ -1,6 +1,6 @@
-![eyeDentify](https://github.com/asyf16/eyeDentify/assets/144833617/3efeaa49-caa6-49c4-ae50-1d511d701d11)
+![Logo Screen](https://github.com/asyf16/eyeDentify/assets/144833617/93f2774c-cb8f-460a-b17f-5b9b4132dfc6)
 
-# 🧠 Our inspiration 
+# 🧠 Our inspiration
 A world without facial recognition is a world full of strangers... EyeDentify was created to improve everyday experiences for those who lack the ability to identify faces, turning all those distant strangers into loved ones.
 
 # 🤔 What does it do? 
