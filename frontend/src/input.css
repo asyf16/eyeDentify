@@ -1,0 +1,5 @@
+/* Adds the @tailwind directives for each of Tailwind’s layers to your main CSS file. */
+/* https://tailwindcss.com/docs/installation#:~:text=Add%20the%20Tailwind,main%20CSS%20file. */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
