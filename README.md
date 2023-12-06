@@ -13,8 +13,19 @@ First, users can create an account on our website built with React. They can the
 
 # 📷 The hardware  
 
+# Features of our product
+We also calculated an accuracy meter for each face detected and did not label faces that were below 90% accurate. 
+
 # Challenges we faced
-One challenge that we ran into was that the video stream can be slow if multiple faces are detected. To alleviate this, we decided to only run the facial detection on every other frame and to scale down the frames before running the detection, then scaling it up again. We also calculated an accuracy meter for each face detected and did not label faces that were below 90% accurate. Furthermore, the camera we used was very sensitive and had trouble connecting to the Raspberry Pi. During our tests, we had to ensure that the camera was securely connected to both the Pi and the headset. 
+One challenge that we ran into was that the video stream can be slow if multiple faces are detected. 
+
+![Running Facial Recognition every other frame](https://github.com/asyf16/eyeDentify/assets/144833617/a95b22f9-c61f-4b66-8a34-8daec0fc9fca)
+
+To alleviate this, we decided to only run the facial detection on every other frame and to scale down the frames before running the detection, then scaling it up again. 
+
+![Scaling Down Images](https://github.com/asyf16/eyeDentify/assets/144833617/84edd6a2-2e82-4e18-9ed5-07f6377c8bbb)
+
+Furthermore, the camera we used was very sensitive and had trouble connecting to the Raspberry Pi. During our tests, we had to ensure that the camera was securely connected to both the Pi and the headset. 
 
 # What is it used for?
 
