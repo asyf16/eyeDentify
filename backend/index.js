@@ -81,7 +81,7 @@ app.post('/register', (req, res) => {
             console.log(exists);
             res.json("User already exists.");
         } else {
-            UserModel.create({email: email, password: password, imgCollection:[]})
+            UserModel.create({email: email, password: password, unknownNotes: "N/A", imgCollection:[]})
             .then(user => {
                 res.json(user);
             })
@@ -129,8 +129,35 @@ app.post('/users/:userEmail/upload', (req, res) => {
     });
 });
 
+// add stranger caption
+app.post('/users/:userEmail/unknown', (req, res) => {
+    // Get the email and imageData from the request params and body
+    const { userEmail } = req.params; 
+    const { unknown } = req.body;
+    
+    
+    UserModel.findOne({email : userEmail})
+    .then(user => {
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        // Update the unknown notes
+        user.unknownNotes = unknown ? unknown : "N/A";
+        // resolve the current promise in the chain by returning
+        return user.save();
+    })
+    .then(updatedUser => {
+        // Respond with the updated user data
+        res.json(updatedUser); 
+    })
+    .catch(error => {
+        console.error('Error updating user unknown:', error);
+        res.status(500).json({ error: 'Failed to update user unknown' });
+    });
+});
+
 // retrieve all imageUrls of the current user
-app.get('/users/:userEmail/retrieve', (req, res) => {
+app.get('/users/:userEmail/retrieveImg', (req, res) => {
     // Get the email from the request params
     const { userEmail } = req.params; 
   
@@ -145,6 +172,25 @@ app.get('/users/:userEmail/retrieve', (req, res) => {
     .catch(error => {
         console.error('Error fetching user imgCollection:', error);
         res.status(500).json({ error: 'Failed to fetch user imgCollection' });
+    });
+});
+
+// retrieve unknownNotes of the current user
+app.get('/users/:userEmail/retrieveUnk', (req, res) => {
+    // Get the email from the request params
+    const { userEmail } = req.params; 
+  
+    UserModel.findOne({email : userEmail})
+    .then(user => {
+        if (!user) {    
+            return res.status(404).json({ error: 'User not found' });
+        }
+        // respond with the unknownNotes
+        res.json(user.unknownNotes);
+    })
+    .catch(error => {
+        console.error('Error fetching unknownNotes:', error);
+        res.status(500).json({ error: 'Failed to fetch unknownNotes' });
     });
 });
 
@@ -184,3 +230,41 @@ app.post('/users/:userEmail/delete', (req, res) => {
     });
 });
 
+// edit an item
+app.post('/users/:userEmail/edit', (req, res) => {
+    // Get the email and imageData from the request params and body
+    const { userEmail } = req.params; 
+    const { AWSCode, name, notes} = req.body;
+  
+    UserModel.findOne({email : userEmail})
+    .then(user => {
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        // find the right object with the matching AWSCode and edit 
+        const ind = user.imgCollection.findIndex(curr => curr.AWSCode === AWSCode);
+        if (ind === -1) {
+            return res.status(404).json({ error: 'Image with the provided AWSCode not found in imgCollection' });
+        } 
+        if(name){
+            user.imgCollection[ind].name = name;
+        }
+        if(notes){
+            user.imgCollection[ind].notes = notes;
+        } else {
+            // user can have no note, but must have a name
+            user.imgCollection[ind].notes = "N/A";
+        }
+        
+        // Save the changes and resolve the promise chain
+        return user.save();
+    })
+    .then(updatedUser => {
+        // Respond with the updated user data
+        res.json(updatedUser); 
+    })
+    .catch(error => {
+        console.error('Error updating user imgCollection:', error);
+        res.status(500).json({ error: 'Failed to update user imgCollection' });
+    });
+}); 
